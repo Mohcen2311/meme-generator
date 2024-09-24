@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:migrate": "npx drizzle-kit migrate",
+    "db:generate": "npx drizzle-kit generate",
+    "db:push": "npx drizzle-kit push"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.4.2",

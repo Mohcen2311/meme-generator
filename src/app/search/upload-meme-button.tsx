@@ -71,9 +71,10 @@ export function UploadMemeButton() {
 
               <IKUpload
                 fileName="test-upload.png"
-                customMetadata={{
-                  displayName,
-                }}
+                // customMetadata={{
+                //   displayName,
+                //   tags,
+                // }}
                 tags={[displayName, ...tags.split(",")]}
                 onError={(error) => {
                   setIsUploading(false);
