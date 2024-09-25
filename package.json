@@ -38,6 +38,7 @@
     "react": "^18",
     "react-color": "^2.19.3",
     "react-dom": "^18",
+    "replicate": "^0.34.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7"
   },

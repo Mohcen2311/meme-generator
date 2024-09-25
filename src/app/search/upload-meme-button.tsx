@@ -16,6 +16,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useFormState, useFormStatus } from "react-dom";
+import { generateImageAction } from "../lib/replicate-action";
 
 export function UploadMemeButton() {
   const uploadInputRef = useRef<HTMLInputElement>(null);
@@ -23,6 +25,11 @@ export function UploadMemeButton() {
   const [displayName, setDisplayName] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [tags, setTags] = useState("");
+
+  const [state, formAction] = useFormState(generateImageAction, {
+    success: false,
+    message: "",
+  });
 
   return (
     <Dialog>
@@ -38,26 +45,27 @@ export function UploadMemeButton() {
 
           <form
             className="space-y-4"
-            onSubmit={(e) => {
-              e.preventDefault();
-              setIsUploading(true);
-              uploadInputRef.current?.click();
-            }}
+            action={formAction}
+            // onSubmit={(e) => {
+            //   e.preventDefault();
+            //   setIsUploading(true);
+            //   // uploadInputRef.current?.click();
+            // }}
           >
             <div>
               <div className="mb-4">
-                <Label htmlFor="displayName">Display Name</Label>
+                <Label htmlFor="prompt">Prompt</Label>
                 <Input
-                  id="displayName"
-                  name="displayName"
-                  placeholder="Display Name"
+                  id="prompt"
+                  name="prompt"
+                  placeholder="Prompt"
                   required
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
                 />
               </div>
 
-              <div>
+              {/* <div>
                 <Label htmlFor="tags">Tags</Label>
                 <Input
                   id="tags"
@@ -67,9 +75,9 @@ export function UploadMemeButton() {
                   value={tags}
                   onChange={(e) => setTags(e.target.value)}
                 />
-              </div>
+              </div> */}
 
-              <IKUpload
+              {/* <IKUpload
                 fileName="test-upload.png"
                 // customMetadata={{
                 //   displayName,
@@ -86,7 +94,7 @@ export function UploadMemeButton() {
                 }}
                 style={{ display: "none" }}
                 ref={uploadInputRef}
-              />
+              /> */}
             </div>
 
             <DialogFooter className="flex justify-end">
@@ -96,15 +104,22 @@ export function UploadMemeButton() {
                 </Button>
               </DialogClose>
 
-              <Button disabled={isUploading} type="submit">
-                {isUploading && <Spinner />}
-                Select & Upload Image
-              </Button>
+              <SubmitButton />
             </DialogFooter>
           </form>
         </DialogHeader>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button disabled={pending} type="submit">
+      {pending && <Spinner />}
+      Generate Meme Picture
+    </Button>
   );
 }
 
