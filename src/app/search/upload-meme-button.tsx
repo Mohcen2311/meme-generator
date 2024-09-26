@@ -11,25 +11,26 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { IKUpload } from "imagekitio-next";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useFormState, useFormStatus } from "react-dom";
 import { generateImageAction } from "../lib/replicate-action";
 
 export function UploadMemeButton() {
-  const uploadInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const [displayName, setDisplayName] = useState("");
-  const [isUploading, setIsUploading] = useState(false);
-  const [tags, setTags] = useState("");
-
   const [state, formAction] = useFormState(generateImageAction, {
     success: false,
-    message: "",
+    redirectTo: "",
   });
+
+  useEffect(() => {
+    if (state.success && state.redirectTo) {
+      router.push(state.redirectTo);
+    }
+  }, [state, router]);
 
   return (
     <Dialog>

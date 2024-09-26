@@ -6,6 +6,11 @@ const nextConfig = {
         hostname: "ik.imagekit.io",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "replicate.delivery",
+        port: "",
+      },
     ],
   },
 };

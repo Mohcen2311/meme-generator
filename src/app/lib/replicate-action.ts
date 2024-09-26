@@ -1,6 +1,7 @@
 "use server";
 
 import Replicate from "replicate";
+import { imagekit } from "./image-kit";
 
 export async function generateImageAction(prevState: any, formData: FormData) {
   "use server";
@@ -18,5 +19,14 @@ export async function generateImageAction(prevState: any, formData: FormData) {
   );
   console.log(output);
 
-  return output;
+  const imageUploadResult = await imagekit.upload({
+    file: String(output)!,
+    fileName: String(output)!,
+    tags: ["public-image", "url-upload"],
+  });
+
+  return {
+    success: true,
+    redirectTo: `/customize/${imageUploadResult.fileId}`,
+  };
 }
